@@ -75,8 +75,11 @@ CKEDITOR.editorConfig = function( config )
 	//config.filebrowserBrowseUrl = '/third_party/ckfinder/ckfinder.html';
 	//config.filebrowserImageBrowseUrl = '/third_party/ckfinder/ckfinder.html?Type=Images';
 	//config.filebrowserFlashBrowseUrl = '/third_party/ckfinder/ckfinder.html?Type=Flash';
-	// uncomment these lines only if you want to allow quick upload
+	// uncomment these lines only if you want to allow quick upload	
 	//config.filebrowserUploadUrl = '/third_party/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
 	//config.filebrowserImageUploadUrl = '/third_party/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
 	//config.filebrowserFlashUploadUrl = '/third_party/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
+	
+	// SL 16.05.2017 - Um QuickUpload zu aktivieren
+	config.filebrowserImageUploadUrl = 'third_party/ckupload.php';
 }
