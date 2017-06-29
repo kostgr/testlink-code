@@ -2,4 +2,5 @@ logs/
 config_db.inc.php
 /custom_config.inc.php
 third_party/
-upload_area/
+**/._*
+upload_area/**
