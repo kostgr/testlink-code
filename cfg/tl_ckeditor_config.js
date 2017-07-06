@@ -81,5 +81,5 @@ CKEDITOR.editorConfig = function( config )
 	//config.filebrowserFlashUploadUrl = '/third_party/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
 	
 	// SL 16.05.2017 - Um QuickUpload zu aktivieren
-	config.filebrowserImageUploadUrl = '/testlink/third_party/ckupload.php';
+	config.filebrowserImageUploadUrl = '/testlink-code/third_party/ckupload.php';
 }
