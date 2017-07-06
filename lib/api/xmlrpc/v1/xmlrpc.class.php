@@ -1205,18 +1205,6 @@ class TestlinkXMLRPCServer extends IXR_Server
     return $status_ok;
   }  
 
-  protected function _checkCloseBuildRequest($messagePrefix='')
-  {
-    $checkFunctions = array('authenticate');
-    $status_ok=$this->_runChecks($checkFunctions,$messagePrefix);
-    if($status_ok)
-    {
-      $status_ok=$this->_isParamPresent(self::$buildIDParamName,$messagePrefix,self::SET_ERROR);            
-    }       
-        
-    return $status_ok;
-  }
-  
   /**
    * Run all the necessary checks to see if the createBuild request is valid
    *  
@@ -1603,45 +1591,6 @@ class TestlinkXMLRPCServer extends IXR_Server
     return $str;        
   }
 
-  public function closeBuild($args)
-  { //_checkCloseBuildRequest
-    $operation = __FUNCTION__;
-    $messagePrefix="({$operation}) - ";
-    $resultInfo = array();
-    $resultInfo[0]["status"] = true;
-    $resultInfo[0]["operation"] = $operation;
-    $returnMessage = GENERAL_SUCCESS_STR;
-
-    $this->_setArgs($args);
-
-    // check the tpid
-    if($this->_checkCloseBuildRequest($messagePrefix))
-    {
-      $buildID = intval($this->args[self::$buildIDParamName]);
-     
-      
-//      if ($this->tplanMgr->check_build_name_existence($testPlanID,$buildName))
-//      {
-//        //Build exists so just get the id of the existing build
-//        $insertID = $this->tplanMgr->get_build_id_by_name($testPlanID,$buildName);
-//        $returnMessage = sprintf(BUILDNAME_ALREADY_EXISTS_STR,$buildName,$insertID);
-//        $resultInfo[0]["status"] = false;
-//      
-//      } 
-        
-      $bm = new build_mgr($this->dbObj);
-      $bm->setClosed($buildID);
-      
-      $resultInfo[0]["id"] = 0;  
-      $resultInfo[0]["message"] = $returnMessage;
-      return $resultInfo;         
-    }
-    else
-    {
-      return $this->errors;
-    }  
-  }
-  
   /**
    * Creates a new build for a specific test plan
    *
@@ -8392,7 +8341,7 @@ protected function createAttachmentTempFile()
     $resultInfo[0]["id"] = 0;
     $resultInfo[0]["status"] = true;
     $resultInfo[0]["operation"] = $operation;
-    $retultInfo[0]["message"] = GENERAL_SUCCESS_STR;
+    $resultInfo[0]["message"] = GENERAL_SUCCESS_STR;
 
     $this->_setArgs($args);
 
@@ -8449,90 +8398,6 @@ protected function createAttachmentTempFile()
 
 
     return $status_ok ? $resultInfo : $this->errors;
-
-     
-    // check the tpid
-    if($this->_checkCreateBuildRequest($messagePrefix) && 
-       $this->userHasRight("testplan_create_build",self::CHECK_PUBLIC_PRIVATE_ATTR))
-    {
-      $testPlanID = intval($this->args[self::$testPlanIDParamName]);
-      $buildName = $this->args[self::$buildNameParamName];          
-      $buildNotes = "";
-      if($this->_isBuildNotePresent())
-      {      
-        $buildNotes = $this->dbObj->prepare_string($this->args[self::$buildNotesParamName]);
-      }
-      
-      
-      if ($this->tplanMgr->check_build_name_existence($testPlanID,$buildName))
-      {
-        //Build exists so just get the id of the existing build
-        $insertID = $this->tplanMgr->get_build_id_by_name($testPlanID,$buildName);
-        $returnMessage = sprintf(BUILDNAME_ALREADY_EXISTS_STR,$buildName,$insertID);
-        $resultInfo[0]["status"] = false;
-      
-      } 
-      else 
-      {
-        //Build doesn't exist so create one
-        // ,$active=1,$open=1);
-        // ($tplan_id,$name,$notes = '',$active=1,$open=1,$release_date='')
-
-        // key 2 check with default value is parameter is missing
-        $k2check = array(self::$activeParamName => 1,self::$openParamName => 1,
-                         self::$releaseDateParamName => null,
-                         self::$copyTestersFromBuildParamName => 0);
-        foreach($k2check as $key => $value)
-        {
-          $opt[$key] = $this->_isParamPresent($key) ? $this->args[$key] : $value;
-        }
-
-        // check if release date is valid date.
-        // do not check relation with now(), i.e can be <,> or =.
-        //
-        if( !is_null($opt[self::$releaseDateParamName]) )
-        {
-          if( !$this->validateDateISO8601($opt[self::$releaseDateParamName]) )
-          {
-            $opt[self::$releaseDateParamName] = null;
-          }  
-        }  
-
-        $bm = new build_mgr($this->dbObj);
-        $insertID = $bm->create($testPlanID,$buildName,$buildNotes,
-                                $opt[self::$activeParamName],
-                                $opt[self::$openParamName],
-                                $opt[self::$releaseDateParamName]);
-      
-        if( $insertID > 0)
-        {
-          $sourceBuild = intval($opt[self::$copyTestersFromBuildParamName]);
-
-          if( $sourceBuild > 0 )
-          {
-            // Check if belongs to test plan, otherwise ignore in silence
-            $sql = " SELECT id FROM {$this->tables['builds']} " .
-                   " WHERE id = " . $sourceBuild .
-                   " AND testplan_id = " . $testPlanID;
-            $rs = $this->dbObj->get_recordset($sql);
-
-            if( count($rs) == 1 )
-            {
-              $taskMgr = new assignment_mgr($this->dbObj);
-              $taskMgr->copy_assignments($sourceBuild, $insertID, $this->userID);
-            }  
-          } 
-        }  
-      }
-      
-      $resultInfo[0]["id"] = $insertID;  
-      $resultInfo[0]["message"] = $returnMessage;
-      return $resultInfo;         
-    }
-    else
-    {
-      return $this->errors;
-    }  
   }
  
 
@@ -8544,7 +8409,6 @@ protected function createAttachmentTempFile()
   {
     $this->methods = array( 'tl.reportTCResult' => 'this:reportTCResult',
                             'tl.setTestCaseExecutionResult' => 'this:reportTCResult',
-                            'tl.closeBuild' => 'this:closeBuild',
                             'tl.createBuild' => 'this:createBuild',
                             'tl.closeBuild' => 'this:closeBuild',
                             'tl.createPlatform' => 'this:createPlatform',
