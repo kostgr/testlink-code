@@ -17,8 +17,8 @@ $filename = time()."_".$_FILES['upload']['name'];
 	Ebenen tiefer und müssten somit "../../upload/" verwenden.
 	SL 16.05.2017 */
 //$url = '/var/testlinktest/upload_area/'.time()."_".$_FILES['upload']['name'];
-$url = '/testlink-code/upload_area/'. $filename;
-
+$url = '/' . $g_ktk_testlink_upload_rel_dir . $filename;
+#$url = '/testlink/upload_area/' . $filename;
 
  //extensive suitability check before doing anything with the file…
     if (($_FILES['upload'] == "none") OR (empty($_FILES['upload']['name'])) )
