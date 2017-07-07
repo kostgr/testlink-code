@@ -4113,3 +4113,4 @@ $TLS_no_access_to_feature = "Você não tem permissões para aceder a esta funci
 
 $TLS_applyExecTypeChangeToAllSteps = "Aplicar a todos os Passos";
 // ----- END ------------------------------------------------------------------
+
