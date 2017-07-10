@@ -61,7 +61,8 @@ var warning_delete_attachment = "{lang_get s='warning_delete_attachment'}";
       <label for="uploadedFile_[{$attach_id}]" class="labelHolder">{$labels.local_file} </label>
       <img class="clickable" src="{$tlImages.activity}" title="{$labels.max_size_file_upload}: {$gui->import_limit} Bytes)">
         <input type="file" name="uploadedFile[{$attach_id}][]" id="uploadedFile_{$attach_id}" multiple 
-               size="{#UPLOAD_FILENAME_SIZE#}" />
+               size="50" />
+<!--               size="{#UPLOAD_FILENAME_SIZE#}" / -->
         &nbsp;&nbsp;&nbsp;&nbsp;
   </div>
   {/if}
