@@ -10,6 +10,7 @@ editorType: used to understand if code for tinymce need to be loaded
 
 *}
 <!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$pageCharset}" />
 	<meta http-equiv="Content-language" content="en" />
