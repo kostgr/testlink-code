@@ -26,7 +26,7 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
            title="{$inc_steps_labels.show_ghost_string}"
            onclick="showHideByClass('tr','ghost');">
     {/if}
-    {$inc_steps_labels.step_number}
+    {$inc_steps_labels.step_number}</nobr>
     </th>
     <th>{$inc_steps_labels.step_actions}
     </th>

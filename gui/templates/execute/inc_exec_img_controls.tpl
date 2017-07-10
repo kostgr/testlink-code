@@ -267,8 +267,7 @@ Author : franciscom
 
       </table>
       
-      </br>
-      <div class="messages" style="align:center;">
+      <div class="messages" align="center">
       {$args_labels.exec_not_run_result_note}
       </div>
 
