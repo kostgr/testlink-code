@@ -1858,7 +1858,7 @@ $TLS_info_report_tc_priorities = "Dieser Report zeigt das Ergebnis basierend auf
                                  "Die Priorität eines Testfalls wird anhand seiner Wichtigkeit " .
                                  "und der Dringlichkeit berechnet. Für weitere Informationen " .
                                  "lesen Sie das Handbuch und überprüfen Sie Ihre Konfiguration.";
-$TLS_info_res_by_platform = "Dieser Reoprt zeigt das Ergebnis für jede Plattform, die diesem " .
+$TLS_info_res_by_platform = "Dieser Report zeigt das Ergebnis für jede Plattform, die diesem " .
                             "Testplan zugewiesen wurde.";
 $TLS_info_report_milestones_prio = "Dieser Report zeigt für den Testplan definierte Meilensteine. " .
                                    "Ein Meilenstein ist erreicht, wenn alle \"Teil-Meilensteine\" " .
@@ -1866,12 +1866,12 @@ $TLS_info_report_milestones_prio = "Dieser Report zeigt für den Testplan defini
 $TLS_info_report_milestones_no_prio = "Dieser Report zeigt für den Testplan definierte Meilensteine. " .
                                       "Ein Meilenstein ist erreicht, wenn der Testfortschritt grün " .
                                       "eingefärbt ist (Testfortschritt > Ausführungsziel).";
-$TLS_info_res_by_kw = "Dieser Report zeigt das Eregebnis für jedes Stichwort. Wurden einem " .
+$TLS_info_res_by_kw = "Dieser Report zeigt das Ergebnis für jedes Stichwort. Wurden einem " .
                       "Testfall mehrere Stichwörter zugewiesen wird dieser für jedes zugewiesene " .
                       "Stichwort berücksichtigt.";
 $TLS_info_gen_test_rep = "<b>Allgemeine Informationen</b><br />" .
                          "Alle Reporte berücksichtigen nur die letzte Ausführung jedes Testfalls.<br />" .
-                         "Sie können die Tabellen durch klicken auf die Spaltenköpfe sortieren.";
+                         "Sie können die Tabellen durch Klicken auf die Spaltenköpfe sortieren.";
 
 
 

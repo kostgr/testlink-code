@@ -340,13 +340,13 @@ Wenn bspw. ein Testfall auf mehrere Builds ausgeführt wurde, dann wird nur das 
 
 <p>'Letztes Test Ergebnis' wird in vielen Reports genutzt und ist wie folgt festgelegt:</p>
 <ul>
-<li>Die Reihenfolge in der Build einem Test Plan hinzugefügt werden, bestimmt welches Build das neueste ist.
+<li>Die Reihenfolge in der Builds einem Test Plan hinzugefügt werden, bestimmt welches Build das neueste ist.
 Die Ergebnisse des neuesten Builds haben Vorrang vor älteren Builds. Wenn bspw. im Build 1 ein Testfall zuerst als
 'Fehlgeschlagen' markiert wird und im Build 2 als 'OK', dann ist das neueste Ergebnis 'OK'.</li>
-<li>Wenn ein Testfall mehrmals auf dem selben Build ausgeführt wird, so hat die letzte Ausführung vorrang.
+<li>Wenn ein Testfall mehrmals auf dem selben Build ausgeführt wird, so hat die letzte Ausführung Vorrang.
 Wenn bspw. das Build 3 dem Team und Tester freigegeben wird und Tester 1 es um 14 Uhr als 'OK' markiert
 und Tester 2 um 15 Uhr als 'Fehlgeschlagen' markiert, so erscheint das Ergebnis als 'Fehlgeschlagen'.</li>
-<li>Testfälle die als 'nicht getestet' markiert sind werden nicht berücksichtigt. Wenn z.B ein Testfall in 
+<li>Testfälle die als 'nicht getestet' markiert sind, werden nicht berücksichtigt. Wenn z.B ein Testfall in 
 Build 1 als 'OK' markiert wird und in Build 2 nicht ausgeführt wird, so wird das zuletzt markierte Ergebnis 'OK'
 übernommen.</li>
 </ul>
@@ -374,7 +374,7 @@ ausgeführt wurde, so wird das zuletzt markierte Ergebnis übernommen.</p>
 <h3>Query Metriken</h3>
 <p>Dieser Report besteht aus einer Query Form Seite und einer Query Ergebnis Seite, die die befragten Daten enthält.
 Die Query Form Seite ist eine Query Seite mit vier Bedienelementen. Jedem Bedienelement ist ein Standardwert
-zugeordnet, der die Anzahl an angefragt Testfällen und Builds maximiert. Die Änderung der 
+zugeordnet, der die Anzahl an angefragten Testfällen und Builds maximiert. Die Änderung der 
 Bedienelemnte erlaubt es dem Nutzer die Ergebnisse zu filtern und spezifische Reports für bestimmte Besitzer,
 Stichwörter, Suiten und Build Kombinationen zu generieren.</p>
 
@@ -391,7 +391,7 @@ Zurzeit gibt es keine Funktion um nach nicht zugewiesenen Testfällen zu suchen.
 dann können Sie dieses Bedienelement ändern.</li>
 <li><b>Top-Level Suite</b> 0->n Suiten höchster Ebene können ausgewählt werden. Standardmäßig sind alle Suiten
 ausgewählt. Nur Suiten die selektiert sind, werden für die Ergebnis-Metriken abgefragt. Wenn Sie nur an einer 
-bestimmten Suite interessiert sind, dann sollte Sie dieses Bedienelement geändert werden.</li>
+bestimmten Suite interessiert sind, dann sollte dieses Bedienelement geändert werden.</li>
 <li><b>Builds</b> 1->n Builds können ausgewählt werden. Standardmäßig sind alle ausgewählt. Für Metriken werden nur 
 die selektierten Ausführungen eines Builds berücksichtigt. 
 Wenn Sie bspw. wissen möchten wieviele Testfälle auf den letzten 3 Builds ausgeführt wurden, sollte dieses 
@@ -401,25 +401,25 @@ womit die Metrik per Suite oder Metrik per Test Plan berechnet werden.
 Wenn z.B der Besitzer 'Greg', Stichwort='Priorität 1', und alle wählbaren Test Suiten ausgewählt sind, werden nur Priorität 1 Testfälle,
 die Greg zugewiesen sind berücksichtigt. Die Anzahl der Testfälle im Test Report werden durch diese 3 Bedienelemente
 beeinflusst. 
-Die Auswahl der Builds beeinflusst ob ein Testfall als 'OK', 'Fehlgeschlagen', 'Blockiert', oder 'nicht getestet' gilt. 
+Die Auswahl der Builds beeinflusst, ob ein Testfall als 'OK', 'Fehlgeschlagen', 'Blockiert', oder 'nicht getestet' gilt. 
 Bitte sehen Sie nach unter 'Letztes Test Ergebnis'.</li>
 </ul>
-<p>Klicken Sie das Element 'Abschicken' an um mit der Anfrage fortzufahren und die Ausgabe zu betrachten.</p>
+<p>Klicken Sie das Element 'Abschicken' an, um mit der Anfrage fortzufahren und die Ausgabe zu betrachten.</p>
 
 <p>Query Report Seite zeigt an: </p>
 <ol>
 <li>Die Anfrage Parameter die genutzt wurden, um den Bericht zu erstellen </li>
 <li>Summe für den gesamten Test Plan</li>
-<li>ein per Test Suite Abbau aller (Summe / bestandenen / fehlgeschlagenen / blockierten / nicht getesten)
-und aller Ausführungen. Wenn eine Testfall auf mehreren Builds ausgeführt wurde werden alle Ausführungen der
+<li>Ein per Test Suite Aufbau aller Testergebnisse (Summe / bestandenen / fehlgeschlagenen / blockierten / nicht getesten)
+und aller Ausführungen. Wenn eine Testfall auf mehreren Builds ausgeführt wurde, werden alle Ausführungen der
 ausgewählten Builds angezeigt. Allerdings, die Zusammenfassung der Suite beinhaltet nur das Letzte Testergebnis 
 des ausgewählten Builds.</li>
 </ol>
 
 <h3>Blockierte, fehlgeschlagene und nicht getestete Testfall Reports</h3>
 <p>Diese Reports zeigen alle zurzeit blockierten, fehlerhaften oder nicht getesteten Testfälle an. Die 
-'Letztes Test Ergebnis' Logik (welches oben unter 'Allgemeine Test Plan Metriken' beschrieben ist) 
-wird angewendet um zu bestimmen ob  ein Testfall als 'Fehlgeschlagen', 'Blockiert', oder 'nicht getestet' 
+'Letztes Test Ergebnis' Logik (welche oben unter 'Allgemeine Test Plan Metriken' beschrieben ist) 
+wird angewendet, um zu bestimmen, ob ein Testfall als 'Fehlgeschlagen', 'Blockiert', oder 'nicht getestet' 
 betrachtet werden soll. Testergebnisse von fehlgeschlagenen und blockierten Testfällen zeigen 
 die zugehörigen BUGs an, falls ein BUG Tracking System genutzt wird.</p>
 
@@ -430,7 +430,7 @@ zu exportieren, um bei großen Datenmengen die Daten einfacher durchzusehen.</p>
 
 <h3>Charts - Allgemeine Test Plan Metriken</h3>
 <p>Die 'Letztes Test Ergebnis' Logik wird bei allen vier angezeigten Charts angewendet
-Die Grafiken sind animiert, um sich die Metriken des aktuellen Test Plans zu einfach vorzustellen zu können.
+Die Grafiken sind animiert, um sich die Metriken des aktuellen Test Plans einfacher vorzustellen zu können.
 Die vier Charts sind:</p>
 <ul><li>Kreisdiagramm insgesamt von bestandenen / fehlgeschlagenen / blockierten / nicht getesteten Testfällen</li>
 <li>Balkendiagramm der Ergebnisse nach Stichwörtern</li>
@@ -441,7 +441,7 @@ Die vier Charts sind:</p>
 bestandenen, fehlgeschlagenen, blockierten, nicht getesteten Testfällen erkennen kann.</p>
 
 <h3>Gesamtanzahl der Bugs für jeden Testfall</h3>
-<p> Dieser Bericht zeigt den jeden Testfall mit allen für das ganze Projekt geordneten BUGs. Dieser 
+<p> Dieser Bericht zeigt projektübergreifend jeden Testfall mit ihm zugeordneten BUGs. Dieser 
 Bericht ist nur verfügbar wenn ein BUG Tracking System verbunden ist.</p>";
 
 
@@ -485,8 +485,8 @@ $TLS_htmltext['tc_exec_assignment'] 		= "<h2>Zweck:</h2>
 $TLS_htmltext_title['planUpdateTC']	= "Verlinkte Testfälle aktualisieren";
 $TLS_htmltext['planUpdateTC'] 		= "<h2>Zweck</h2>
 <p>Diese Seite erlaubt das Aktualisieren von Testfällen auf eine neue (andere) Version, wenn die Test Spezifikation
-sich geändert hat. Oft klären sich Funktionalitäten während dem Testen." .
-		" Der Nutzer ändert die Test Spezifikation, jedoch müssen Änderungen im Test Plans übernommen werden. Andernfalls" .
+sich geändert hat. Oft klären sich Funktionalitäten während des Testens." .
+		" Der Nutzer ändert die Test Spezifikation, jedoch müssen Änderungen im Test Plan übernommen werden. Andernfalls" .
 		" wird die originale Version im Test Plan behalten, um den richtigen Bezug der Testergebnisse auf den korrekten ". 
 		"Text eines Testfalls sicherzustellen.</p>
 
