@@ -250,11 +250,13 @@ function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$editorCfg,&$dbHandler)
   switch($renderType)
   {
     case 'template':
+      header("X-XSS-Protection: 0");
       $smartyObj->assign('gui',$guiObj);
       $smartyObj->display($tpl);
     break;  
  
     case 'redirect':
+      header("X-XSS-Protection: 0");
       header("Location: {$tpl}");
       exit();
     break;
