@@ -112,7 +112,7 @@ if(!is_null($linked_tcversions))
     {
       $yoda = explode('/',$audit);                    
       $name = ' ' . lang_get('testcase') . ' ' . end($yoda);
-      foreach($gui->issueSummaryForStep as $ele)
+      foreach($gui->issueSummaryForStep as &$ele)
       {
         $ele .= $name;     
       }  
