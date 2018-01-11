@@ -68,6 +68,7 @@ class testcase extends tlObjectWithAttachments
   var $debugMsg;
   var $layout;
 
+  var $stop_ghost_rendering = array();
 
   /**
    * testplan class constructor
@@ -6008,8 +6009,17 @@ class testcase extends tlObjectWithAttachments
                       if(intval($dx['Step']) > 0)
                       {
                         $deghosted = true;
-                        $stx = $this->get_steps($fi[0]['tcversion_id'],$dx['Step']);
-                        $ghost .= str_replace($replaceSetWebRichEditor,'',$stx[0][$item_key]) . $rightside;
+                        $stop_element = $fi[0]['tcversion_id'].' '. $dx['Step'];
+                        
+                        if (!in_array($stop_element, $this->stop_ghost_rendering))  {
+                            array_push($this->stop_ghost_rendering, $stop_element);
+                            $stx = $this->get_steps($fi[0]['tcversion_id'],$dx['Step']);
+                            array_pop($this->stop_ghost_rendering);
+                            $ghost .= str_replace($replaceSetWebRichEditor,'',$stx[0][$item_key]) . $rightside;
+                        }
+                        else {
+                            $ghost .= '// Recursive Ghost call found == ' . implode('/', $this->stop_ghost_rendering) . ' // ' . $rightside;
+                        }
                       }
                     }
                   }
