@@ -28,6 +28,11 @@ if( ($args->user_action == 'create' || $args->user_action == 'doCreate') &&
     case 'create':
      $dummy = generateIssueText($db,$args,$its); 
      $gui->bug_summary = $dummy->summary;
+     if ($tlCfg->issue_tracking_cfg->short_bug_summary)
+     {
+         $yoda = explode('/',$gui->bug_summary);
+         $gui->bug_summary = end($yoda);
+     }
     break;
 
     case 'doCreate':
