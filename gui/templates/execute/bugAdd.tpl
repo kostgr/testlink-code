@@ -108,9 +108,13 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
     {/if}    
 
     {if $gui->user_action == 'create' || $gui->user_action == 'doCreate' || $gui->user_action == 'link'}
+      {if $tlCfg->issue_tracking_cfg->allways_add_link}
+      <input type="hidden" type="checkbox" name="addLinkToTL" id="addLinkToTL" value="true">
+      {else}
       <br><br>
       <input type="checkbox" name="addLinkToTL"  id="addLinkToTL">
       <span class="label">{$labels.add_link_to_tlexec}</span>
+      {/if}
     {/if}
 
     <div class="groupBtn">

@@ -95,8 +95,13 @@ if(!is_null($linked_tcversions))
 
     $dummy = $tree_mgr->get_node_hierarchy_info($args->version_id);
     
-    $audit = $gui->bug_summary = $tcase_mgr->getAuditSignature((object)array('id' => $dummy['parent_id'])); 
-    $ts = sprintf(lang_get('execution_ts_iso'), date('Y-m-dTH:i',time()));
+    $audit = $gui->bug_summary = $tcase_mgr->getAuditSignature((object)array('id' => $dummy['parent_id']));
+    if ($tlCfg->issue_tracking_cfg->short_bug_summary)
+    {
+        $yoda = explode('/',$audit);
+        $gui->bug_summary = end($yoda) . ' //';
+    }
+    $ts = sprintf(lang_get('execution_ts_iso'), date('Y-m-d H:i',time()));
     $gui->bug_summary .= (' ' . $ts);
 
     $lk = current($linked_tcversions);
@@ -111,10 +116,17 @@ if(!is_null($linked_tcversions))
     if(!is_null($gui->issueSummaryForStep))
     {
       $yoda = explode('/',$audit);                    
-      $name = ' ' . lang_get('testcase') . ' ' . end($yoda);
+      $name = lang_get('testcase') . ' ' . end($yoda);
       foreach($gui->issueSummaryForStep as &$ele)
       {
-        $ele .= $name;     
+        if ($tlCfg->issue_tracking_cfg->short_bug_summary)
+        {
+            $ele = ($name . ' | ' . $ele . ' // ' . $ts);
+        }
+        else
+        {
+            $ele .= (' ' . $name);
+        }
       }  
     }  
   }

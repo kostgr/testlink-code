@@ -966,6 +966,16 @@ $tlCfg->exec_cfg->features->attachments->enabled = true;
 $tlCfg->exec_cfg->features->exec_duration = new stdClass();
 $tlCfg->exec_cfg->features->exec_duration->enabled = true;
 
+// Special logic for issue tracking system integration
+$tlCfg->issue_tracking_cfg = new stdClass();
+
+// true => short bug summary - only the Testcase name with execution date 
+//  DEAFULT false => whole path from project till testcase with execution date at the end as bug summary
+$tlCfg->issue_tracking_cfg->short_bug_summary = false;
+
+// true => allways add direct link to test case execution when creating bug
+// DEFAULT false => show check box for optional adding link to test case execution when creating bug
+$tlCfg->issue_tracking_cfg->allways_add_link = false;
 
 // ----------------------------------------------------------------------------
 /* [Test Specification] */
@@ -1073,7 +1083,7 @@ $tlCfg->testcase_cfg->relations->type_description = array(TL_REL_TYPE_PARENT_CHI
 // string: value of value member is assigned to FCK object
 // string_id: value member is used in a lang_get() call, and return value
 //       is assigned to FCK object. Configure string_id on custom_strings.txt
-// value: value member is used as file name.
+// file: value member is used as file name.
 //       file is readed and it's contains assigned to FCK object
 //
 // any other value for type, results on '' assigned to FCK object

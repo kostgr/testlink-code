@@ -234,12 +234,16 @@ Author : franciscom
         </td>
       </tr>
 
+      {if $tlCfg->issue_tracking_cfg->allways_add_link}
+      <input type="hidden" type="checkbox" name="addLinkToTL" id="addLinkToTL" value="true">
+      {else}
       <tr>
         <td colspan="2">
           <input type="checkbox" name="addLinkToTL"  id="addLinkToTL">
           <span class="label">{$args_labels.add_link_to_tlexec}</span>
         </td>
       </tr>
+      {/if} {* else of $tlCfg->issue_tracking_cfg->allways_add_link *}
 
       </table>
       
