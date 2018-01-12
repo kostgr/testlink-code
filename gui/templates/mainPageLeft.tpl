@@ -88,7 +88,7 @@
     {/if}
 
     {if $gui->grants.codetracker_management || $gui->grants.codetracker_view}
-      <a href="lib/codetrackers/codeTrackerView.php">{$labels.href_codetracker_management}</a>
+      <a href="lib/codetrackers/codeTrackerView.php" class="list-group-item" style="{$aStyle}">{$labels.href_codetracker_management}</a>
     {/if}
   </div>
 {/if}
