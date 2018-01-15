@@ -200,6 +200,10 @@ class issueTrackerCommands
       $guiObj->main_descr = '';
       $guiObj->action_descr = '';
       $guiObj->template = "issueTrackerView.php";
+      if (isset($_SESSION['its'][$it->name]))
+      {
+          unset($_SESSION['its'][$it->name]);
+      }
     }
     else
     {
