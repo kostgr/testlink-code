@@ -406,7 +406,13 @@ class redminerestInterface extends issueTrackerInterface
       $xml = $issueXmlObj->asXML();
       if( property_exists($this->cfg,'custom_fields') )
       {
-        $cf = (string)$this->cfg->custom_fields;
+        $arr = [];
+        foreach($opt->values as $val)
+        {
+            array_push($arr, htmlentities($val, ENT_XML1));
+        }
+        
+        $cf = str_replace($opt->tags,$arr,(string)$this->cfg->custom_fields);
         $xml = str_replace('</issue>', $cf . '</issue>', $xml);
       }
 
