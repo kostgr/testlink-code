@@ -389,7 +389,7 @@ $TLS_quick_blocked = "Als blockiert markieren (durch Klick)";
 $TLS_onchange_save = "Wert wird automatisch bei Änderung gespeichert";
 $TLS_CSRF_attack = "'Cross-Site Request Forgery' Angriff!";
 $TLS_already_exists_not_updated = "Existiert bereits => nicht aktualisiert";
-$TLS_assign_exec_task_to_me = "Die Aufgabe mir zuweisen";
+$TLS_assign_exec_task_to_me = "Die Testausführung mir zuweisen";
 $TLS_chosen_blank_option = "   ";
 
 $TLS_monitorable = 'kann überwacht werden';
