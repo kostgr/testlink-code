@@ -1423,7 +1423,6 @@ function initializeGui(&$dbHandler,&$argsObj,&$cfgObj,&$tplanMgr,&$tcaseMgr,&$is
   // ------------------------------------------------------------------
 
   $dummy = $tplanMgr->get_builds_for_html_options($argsObj->tplan_id);
-  $gui->build_id = $argsObj->build_id;
   $gui->build_name = isset($dummy[$argsObj->build_id]) ? $dummy[$argsObj->build_id] : '';
   $gui->build_div_title = lang_get('build') . ' ' . $gui->build_name;
 
@@ -1685,11 +1684,16 @@ function getOtherExecutions(&$dbHandler,$tcase_id,$tcversion_id,$guiObj,$argsObj
         {
             $build_id_arg = null;
         }  
+        $platform_id_arg = $argsObj->platform_id;
+        if($cfgObj->exec_cfg->show_history_all_platforms)
+        {
+            $platform_id_arg = null;
+        }
       // Warning!!!:
       // we can't use the data we have got with previous call to get_last_execution()
       // because if user have asked to save results last execution data may be has changed
       $aux_map = $tcaseMgr->get_last_execution($tcase_id,$tcversion_id,$argsObj->tplan_id,
-          $build_id_arg,$argsObj->platform_id);
+          $build_id_arg,$platform_id_arg);
       if(!is_null($aux_map))
       {
         $other_execs = array();
