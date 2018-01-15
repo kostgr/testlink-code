@@ -108,8 +108,7 @@ if(!is_null($linked_tcversions))
     $gui->direct_link = trim($_SESSION['basehref'],'/') . 
                         "/ltx.php?item=exec&feature_id=" . $lk[0]['feature_id'] .
                         "&build_id=" . $args->build_id;
-
-
+    
     $args->direct_link = $gui->direct_link;
      
     // 20151206 - issue @ test step
@@ -1424,6 +1423,7 @@ function initializeGui(&$dbHandler,&$argsObj,&$cfgObj,&$tplanMgr,&$tcaseMgr,&$is
   // ------------------------------------------------------------------
 
   $dummy = $tplanMgr->get_builds_for_html_options($argsObj->tplan_id);
+  $gui->build_id = $argsObj->build_id;
   $gui->build_name = isset($dummy[$argsObj->build_id]) ? $dummy[$argsObj->build_id] : '';
   $gui->build_div_title = lang_get('build') . ' ' . $gui->build_name;
 
@@ -1680,11 +1680,16 @@ function getOtherExecutions(&$dbHandler,$tcase_id,$tcversion_id,$guiObj,$argsObj
     }    
     else
     {
+        $build_id_arg = $argsObj->build_id;
+        if($cfgObj->exec_cfg->show_history_all_builds )
+        {
+            $build_id_arg = null;
+        }  
       // Warning!!!:
       // we can't use the data we have got with previous call to get_last_execution()
       // because if user have asked to save results last execution data may be has changed
       $aux_map = $tcaseMgr->get_last_execution($tcase_id,$tcversion_id,$argsObj->tplan_id,
-                                               $argsObj->build_id,$argsObj->platform_id);
+          $build_id_arg,$argsObj->platform_id);
       if(!is_null($aux_map))
       {
         $other_execs = array();

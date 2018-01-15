@@ -159,15 +159,15 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
         <div id="latest_exec_any_build_notes" style="margin:8px;">
         </div>
         <hr>
-        {/if}
+       			{/if} {* if $abs_last_exec.execution_notes neq "" *}
         {* ///////////////////////////// *}
 
 
 
-  		  {else}
+  		    {else} {* ///// $abs_last_exec.status != '' and $abs_last_exec.status != $tlCfg->results.status_code.not_run  /////// *}
           {$drawNotRun=1}
    		  {/if}
-     {/if}
+     	{/if} {* /////////// $cfg->exec_cfg->show_last_exec_any_build && $gui->history_on == 0  ///////// *}
 	 
 	 {if $drawNotRun }
 	 	<div class="not_run">{$labels.test_status_not_run}</div>
@@ -187,8 +187,11 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
 
       {if $gui->history_on == 0 && $show_current_build}
    		   <div class="exec_history_title">
-  			    {$labels.last_execution} {$labels.exec_current_build}
-  			    {$title_sep_type3} {$build_title} {$title_sep} {$gui->build_name|escape}
+			   		{if $abs_last_exec.build_id == $gui->build_id} 
+			   		{$labels.last_execution} {$labels.exec_current_build} {$title_sep_type3} {$build_title} {$title_sep} {$gui->build_name|escape}
+			   		{else}
+			   		<span style="background-color: NavajoWhite">{$labels.last_execution} {$labels.exec_any_build} {$title_sep_type3} {$build_title} {$title_sep} {$abs_last_exec.build_name|escape}</span> 
+			   		{/if}
   			 </div>
 		  {/if}
 
@@ -254,8 +257,10 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
   			  {localize_timestamp ts=$tc_old_exec.execution_ts}
   			  </td>
 				  {if $gui->history_on == 0 || $cfg->exec_cfg->show_history_all_builds}
-  				<td>{if !$tc_old_exec.build_is_open}
-  				    <img src="{$tlImages.lock}" title="{$labels.closed_build}">{/if}
+  				<td {if $tc_old_exec.build_id != $gui->build_id} style="background-color: NavajoWhite"{/if} >
+  				    {if !$tc_old_exec.build_is_open}
+  				    <img src="{$tlImages.lock}" title="{$labels.closed_build}">
+  				    {/if}
   				    {$tc_old_exec.build_name|escape}
   				</td>
   				{/if}
