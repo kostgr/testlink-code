@@ -187,10 +187,13 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
 
       {if $gui->history_on == 0 && $show_current_build}
    		   <div class="exec_history_title">
-			   		{if $abs_last_exec.build_id == $gui->build_id} 
+			   		{if $gui->other_execs.$tcversion_id.0.build_id == $gui->build_id && $gui->other_execs.$tcversion_id.0.platform_id == $gui->platform_id} 
 			   		{$labels.last_execution} {$labels.exec_current_build} {$title_sep_type3} {$build_title} {$title_sep} {$gui->build_name|escape}
 			   		{else}
-			   		<span style="background-color: NavajoWhite">{$labels.last_execution} {$labels.exec_any_build} {$title_sep_type3} {$build_title} {$title_sep} {$abs_last_exec.build_name|escape}</span> 
+			   		<span style="background-color: NavajoWhite">{$labels.last_execution} {$labels.exec_any_build} {$title_sep_type3} {$build_title} {$title_sep} {$gui->other_execs.$tcversion_id.0.build_name|escape} 
+			   			{if $gui->has_platforms && $cfg->exec_cfg->show_history_all_platforms}
+			   			{$title_sep_type3} {$labels.platform} {$title_sep} {$gui->other_execs.$tcversion_id.0.platform_name|escape}
+			   			{/if}</span> 
 			   		{/if}
   			 </div>
 		  {/if}
@@ -267,7 +270,7 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
 
 				  {if $gui->has_platforms && 
 				      ($gui->history_on == 0 || $cfg->exec_cfg->show_history_all_platforms)}
-  				  <td>
+  				  <td {if $tc_old_exec.platform_id != $gui->platform_id} style="background-color: NavajoWhite"{/if} >
 					  {$tc_old_exec.platform_name}
   				  </td>
   				{/if}
