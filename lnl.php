@@ -192,17 +192,6 @@ function init_args(&$dbHandler)
   // validate apikey to avoid SQL injection
   $args->apikey = trim($args->apikey);
   $akl = strlen($args->apikey);
-  
-  switch($akl)
-  {
-    case $userAPIkeyLen:
-    case $objectAPIkeyLen:
-    break;
-
-    default:
-     throw new Exception("Aborting - Bad API Key lenght", 1);
-    break;  
-  }
 
   if($akl == $userAPIkeyLen)
   {
@@ -240,6 +229,20 @@ function init_args(&$dbHandler)
       $args->apikey = $rs['api_key'];
       $args->envCheckMode = 'hippie';
     }  
+    else 
+    {
+        switch($akl)
+        {
+            case $userAPIkeyLen:
+            case $objectAPIkeyLen:
+                break;
+                
+            default:
+                throw new Exception("Aborting - Bad API Key lenght", 1);
+                break;
+        }
+        
+    }
 
     $args->debug = 'OBJECT-APIKEY';
     $kerberos = new stdClass();
