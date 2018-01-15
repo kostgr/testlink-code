@@ -3681,6 +3681,7 @@ $TLS_issue_on_step = "Störung bei Schritt-Nr. ";
 
 $TLS_add_link_to_tlexec = "Link auf die Testfall-Ausführung zum Bugtracker hinzufügen";
 $TLS_dl2tl = 'Link zur Testlink-Ausführung: ';
+$TLS_dl2tl_exec_report = 'Link zum Testlink-Ausführungsbericht: ';
 $TLS_old_style_login = 'Wohl bekannter Anmeldeformular';
 $TLS_new_style_login = 'Neuen Anmeldeformular ausprobieren';
 

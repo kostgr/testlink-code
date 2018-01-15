@@ -652,6 +652,10 @@ function addIssue($dbHandler,$argsObj,$itsObj)
       $opt->$prop = $argsObj->$prop;    
     }   
   }  
+  
+  $opt->tags = $issueText->tags;
+  $opt->values = $issueText->values;
+  
   $rs = $itsObj->addIssue($issueText->summary,$issueText->description,$opt); 
   
   $ret['msg'] = $rs['msg'];
@@ -734,33 +738,41 @@ function generateIssueText($dbHandler,$argsObj,$itsObj)
   {
     $dummy = $resultsCfg['code_status'][$exec['status']];  
   }                         
-  $exec['statusVerbose'] = sprintf(lang_get('issue_exec_result'),$dummy);
+  $exec['statusVerbose'] = $dummy;
   
   unset($tcaseMgr);
 
   $platform_identity = '';
   if($exec['platform_id'] > 0)
   {
-    $platform_identity = sprintf(lang_get('issue_platform') ,$exec['platform_name']); 
+    $platform_identity = $exec['platform_name']; 
   }
+  
+  $ret->tags = array('%%EXECID%%', '%%TESTER%%','%%TESTPLAN%%','%%PLATFORM%%',
+      '%%BUILD%%', '%%EXECTS%%','%%EXECSTATUS%%','%%EXECNOTES%%',
+      '%%EXECID_VAL%%', '%%TESTER_VAL%%','%%TESTPLAN_VAL%%','%%PLATFORM_VAL%%',
+      '%%BUILD_VAL%%', '%%EXECTS_VAL%%','%%EXECSTATUS_VAL%%');
+  $ret->values = array(sprintf(lang_get('issue_exec_id'),$argsObj->exec_id),
+      sprintf(lang_get('issue_tester'),$exec['tester_login']),
+      sprintf(lang_get('issue_tplan'),$exec['testplan_name']),
+      sprintf(lang_get('issue_platform'), $platform_identity),
+      sprintf(lang_get('issue_build'),$exec['build_name']),
+      sprintf(lang_get('execution_ts_iso'),$exec['execution_ts']),
+      sprintf(lang_get('issue_exec_result'), $exec['statusVerbose']),
+      $exec['execution_notes'],
+      $argsObj->exec_id,
+      $exec['tester_login'],
+      $exec['testplan_name'],
+      $platform_identity,
+      $exec['build_name'],
+      $exec['execution_ts'],
+      $exec['statusVerbose']
+      );
 
   if(property_exists($argsObj, 'bug_notes'))
   {  
     // parse 
-    $tags = array('%%EXECID%%','%%TESTER%%','%%TESTPLAN%%','%%PLATFORM%%',
-                  '%%BUILD%%', '%%EXECTS%%','%%EXECSTATUS%%','%%EXECNOTES%%'); 
-    $values = array(sprintf(lang_get('issue_exec_id'),$argsObj->exec_id),
-                    sprintf(lang_get('issue_tester'),$exec['tester_login']),
-                    sprintf(lang_get('issue_tplan'),$exec['testplan_name']),
-                    $platform_identity,
-                    sprintf(lang_get('issue_build'),$exec['build_name']),
-                    sprintf(lang_get('execution_ts_iso'),$exec['execution_ts']),
-                    $exec['statusVerbose'],
-                    $exec['execution_notes']);
-
-
- 
-    $ret->description = str_replace($tags,$values,$argsObj->bug_notes);
+    $ret->description = str_replace($ret->tags,$ret->values,$argsObj->bug_notes);
    
     // @since 1.9.14
     // %%EXECATT:1%% => lnl.php?type=file&id=1&apikey=gfhdgjfgdsjgfjsg
@@ -811,6 +823,7 @@ function generateIssueText($dbHandler,$argsObj,$itsObj)
   if( $argsObj->addLinkToTL )
   {
     $ret->description .= "\n\n" . lang_get('dl2tl') . $argsObj->direct_link;
+    $ret->description .= "\n\n" . lang_get('dl2tl_exec_report') . $argsObj->basehref . 'lib/execute/execPrint.php?id=' . $argsObj->exec_id;
   }  
 
   return $ret;
