@@ -110,6 +110,8 @@ if(!is_null($linked_tcversions))
                         "&build_id=" . $args->build_id;
     
     $args->direct_link = $gui->direct_link;
+    
+    $args->issue_desc_template = getItemTemplateContents('execution_template', 'issue_comment_base', '');
      
     // 20151206 - issue @ test step
     if(!is_null($gui->issueSummaryForStep))

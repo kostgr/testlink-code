@@ -1,0 +1,19 @@
+h2. Problembeschreibung
+
+%%ISSUEDESC%%
+
+h2. Weitere Details
+
+%%TESTPLAN%%
+%%PLATFORM%%
+%%BUILD%%
+%%EXECTS%%
+%%EXECSTATUS%%
+%%TESTER%%
+
+h2. Ausführungskommentar
+
+%%EXECNOTES%%
+
+h2. Links to Testlink
+

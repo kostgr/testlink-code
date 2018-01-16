@@ -234,6 +234,8 @@ Author : franciscom
         </td>
       </tr>
 
+			<input type="hidden" type="edit" name="issue_desc_template" id="issue_desc_template" value="{$gui->issue_desc_template}">
+
       {if $tlCfg->issue_tracking_cfg->allways_add_link}
       <input type="hidden" type="checkbox" name="addLinkToTL" id="addLinkToTL" value="true">
       {else}

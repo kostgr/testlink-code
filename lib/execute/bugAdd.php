@@ -145,7 +145,8 @@ function initEnv(&$dbHandler)
 		               "user_action" => array("REQUEST",tlInputParameter::STRING_N,
                                           $user_action['minLengh'],$user_action['maxLengh']),
                    "addLinkToTL" => array("POST",tlInputParameter::CB_BOOL),
-                   "tcstep_id" => array("REQUEST",tlInputParameter::INT_N),);
+	               "issue_desc_template" => array("POST", tlInputParameter::STRING_N),
+                   "tcstep_id" => array("REQUEST",tlInputParameter::INT_N));
 	
 	$args = new stdClass();
 	I_PARAMS($iParams,$args);
@@ -163,6 +164,11 @@ function initEnv(&$dbHandler)
 
   $gui = new stdClass();
   $gui->addLinkToTL = $args->addLinkToTL;
+  $gui->issue_desc_template = $args->issue_desc_template;
+  if(empty($gui->issue_desc_template))
+  {
+      $gui->issue_desc_template = getItemTemplateContents('execution_template', 'issue_comment_base', '');
+  }
   switch($args->user_action)
   {
     case 'create':

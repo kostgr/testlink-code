@@ -1178,6 +1178,10 @@ $tlCfg->execution_template->notes = new stdClass();
 $tlCfg->execution_template->notes->type = 'none';
 $tlCfg->execution_template->notes->value = '';
 
+$tlCfg->execution_template->issue_comment_base = new stdClass();
+$tlCfg->execution_template->issue_comment_base->type = 'none';
+$tlCfg->execution_template->issue_comment_base->value = '';
+
 $tlCfg->build_template = new stdClass();
 $tlCfg->build_template->notes = new stdClass();
 $tlCfg->build_template->notes->type = 'none';
