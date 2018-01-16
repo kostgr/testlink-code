@@ -267,6 +267,7 @@ function write_execution(&$db,&$exec_signature,&$exec_data,&$issueTracker)
         $execContext->tplan_apikey = $exec_signature->tplan_apikey;
 
         $execContext->addLinkToTL = $exec_signature->addLinkToTL;
+        $execContext->issue_desc_template = $exec_signature->issue_desc_template;
         $execContext->direct_link = $exec_signature->direct_link;
         $execContext->tcstep_id = 0;
 
@@ -772,7 +773,14 @@ function generateIssueText($dbHandler,$argsObj,$itsObj)
   if(property_exists($argsObj, 'bug_notes'))
   {  
     // parse 
-    $ret->description = str_replace($ret->tags,$ret->values,$argsObj->bug_notes);
+    $ret->description = $argsObj->bug_notes;
+      
+    if( !empty($argsObj->issue_desc_template) )
+    {
+        $ret->description = str_replace(array('%%ISSUEDESC%%'), array($ret->description), $argsObj->issue_desc_template);
+    }
+      
+    $ret->description = str_replace($ret->tags,$ret->values,$ret->description);
    
     // @since 1.9.14
     // %%EXECATT:1%% => lnl.php?type=file&id=1&apikey=gfhdgjfgdsjgfjsg
@@ -824,7 +832,7 @@ function generateIssueText($dbHandler,$argsObj,$itsObj)
   {
     $ret->description .= "\n\n" . lang_get('dl2tl') . $argsObj->direct_link;
     $ret->description .= "\n\n" . lang_get('dl2tl_exec_report') . $argsObj->basehref . 'lib/execute/execPrint.php?id=' . $argsObj->exec_id;
-  }  
+  }
 
   return $ret;
 
