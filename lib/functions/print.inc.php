@@ -1059,8 +1059,6 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
            " JOIN {$tables['builds']} B ON B.id = E.build_id " .
            " WHERE 1 = 1 ";
 	
-	//Bugfix to show only active builds in Test Report view
-	$sql .= "AND B.active = 1";
 	
     if(isset($context['exec_id']))
     {
@@ -1079,6 +1077,8 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
       {
         // We are looking for LATEST EXECUTION of CURRENT LINKED test case version
         $sql .= " AND E.tcversion_number=" . intval($linkedItem[0]['version']);
+        //Bugfix to show only active builds in Test Report view
+        $sql .= " AND B.active = 1";
       }
       $sql .= " ORDER BY execution_id DESC";
     }
