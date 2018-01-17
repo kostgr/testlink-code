@@ -29,7 +29,7 @@ class redminerestInterface extends issueTrackerInterface
 	{
     $this->name = $name;
 		$this->interfaceViaDB = false;
-		$this->methodOpt['buildViewBugLink'] = array('addSummary' => true, 'colorByStatus' => false);
+		$this->methodOpt['buildViewBugLink'] = array('addSummary' => true, 'colorByStatus' => true);
 
     $this->defaultResolvedStatus = array();
     $this->defaultResolvedStatus[] = array('code' => 3, 'verbose' => 'resolved');
@@ -229,6 +229,10 @@ class redminerestInterface extends issueTrackerInterface
 		        $issue->issue_typeHTMLString = "<b>". (string)$xmlObj->tracker['name'] . " </b>";
 				$issue->statusCode = (string)$xmlObj->status['id'];
 				$issue->statusVerbose = (string)$xmlObj->status['name'];;
+				if (isset($this->status_color[$issue->statusVerbose]))
+				{
+				    $issue->statusColor = $this->status_color[$issue->statusVerbose];
+				}
 				$issue->statusHTMLString = "[$issue->statusVerbose] ";
 				$issue->summary = $issue->summaryHTMLString = (string)$xmlObj->subject;
 				$issue->redmineProject = array('name' => (string)$xmlObj->project['name'], 
@@ -513,8 +517,8 @@ class redminerestInterface extends issueTrackerInterface
            '<!-- </custom_fields> -->' . "\n" .
 	         "<!-- Configure This if you want NON STANDARD BEHAIVOUR for considered issue resolved -->\n" .
            "<!--  <resolvedstatus>-->\n" .
-           "<!--    <status><code>3</code><verbose>Resolved</verbose></status> -->\n" .
-           "<!--    <status><code>5</code><verbose>Closed</verbose></status> -->\n" .
+           "<!--    <status><code>3</code><verbose>Resolved</verbose><color>green</color></status> -->\n" .
+           "<!--    <status><code>5</code><verbose>Closed</verbose><color>gray</color></status> -->\n" .
            "<!--  </resolvedstatus> -->\n" .
 				   "</issuetracker>\n";
 	  return $tpl;
