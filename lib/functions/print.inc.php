@@ -934,7 +934,7 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
   {
     $st = new stdClass();
 
-    $tables = tlDBObject::getDBTables(array('executions','builds','execution_tcsteps'));
+    $tables = tlDBObject::getDBTables(array('executions','builds','execution_tcsteps', 'platforms'));
     $tc_mgr = new testcase($db);
     $tplan_urgency = new testPlanUrgency($db);
     $build_mgr = new build_mgr($db);
@@ -1055,12 +1055,12 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
            " E.notes, E.build_id, E.tcversion_id,E.tcversion_number,E.testplan_id," .
            " E.execution_type, E.execution_duration, " .
            " B.name AS build_name " .
+           " ,P.name AS platform_name" .
            " FROM {$tables['executions']} E " .
            " JOIN {$tables['builds']} B ON B.id = E.build_id " .
+           " LEFT OUTER JOIN {$tables['platforms']} P ON P.id = E.platform_id" .
            " WHERE 1 = 1 ";
 	
-	//Bugfix to show only active builds in Test Report view
-	$sql .= "AND B.active = 1";
 	
     if(isset($context['exec_id']))
     {
@@ -1079,6 +1079,8 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
       {
         // We are looking for LATEST EXECUTION of CURRENT LINKED test case version
         $sql .= " AND E.tcversion_number=" . intval($linkedItem[0]['version']);
+        //Bugfix to show only active builds in Test Report view
+        $sql .= " AND B.active = 1";
       }
       $sql .= " ORDER BY execution_id DESC";
     }
@@ -1562,8 +1564,11 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
     switch($env->reportType)
     {
       case DOC_TEST_PLAN_EXECUTION_ON_BUILD:
-        $ib = $build_mgr->get_by_id($build_id);
-        $bn = htmlspecialchars($ib['name']);
+        if ($exec_info)
+        {
+            $ib = $build_mgr->get_by_id($build_id);
+            $bn = htmlspecialchars($ib['name']);
+        }
       break;
 
       case DOC_TEST_PLAN_EXECUTION:
@@ -1572,6 +1577,12 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
           $bn = htmlspecialchars($exec_info[0]['build_name']);
         }   
       break;  
+      
+      default:
+          if ($exec_info)
+          {
+              $bn = htmlspecialchars($exec_info[0]['build_name']);
+          }
     }
 
     /* Build name */
@@ -1592,6 +1603,13 @@ function renderTestCaseForPrinting(&$db,&$node,&$options,$env,$context,$indentLe
       }  
 
     }  
+    
+    /* Platform name */
+    if ($platform_id != 0 && !empty($exec_info[0]['platform_name']))
+    {
+        $code .= '<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">' . lang_get('platform') .'</td>' .
+            '<td colspan="'  . $tsp . '">' . $exec_info[0]['platform_name'] . "</td></tr>\n";
+    }
 
     if( isset($node['assigned_to']) )
     {
