@@ -507,7 +507,7 @@ abstract class issueTrackerInterface
    *
    **/
   public function setResolvedStatusCfg()
-  {
+  { 
     if( property_exists($this->cfg,'resolvedstatus') )
     {
       $statusCfg = (array)$this->cfg->resolvedstatus;
@@ -517,10 +517,22 @@ abstract class issueTrackerInterface
       $statusCfg['status'] = $this->defaultResolvedStatus;
     }
     $this->resolvedStatus = new stdClass();
+    
+    $fill_colors = !property_exists($this, 'status_color');
+    
+    if ($fill_colors)
+    {
+        $this->status_color = array();
+    }
+    
     foreach($statusCfg['status'] as $cfx)
     {
       $e = (array)$cfx;
       $this->resolvedStatus->byCode[$e['code']] = $e['verbose'];
+      if ($fill_colors && isset($e['color']))
+      {
+        $this->status_color[$e['verbose']] = $e['color'];   
+      }
     }
     $this->resolvedStatus->byName = array_flip($this->resolvedStatus->byCode);
   }
