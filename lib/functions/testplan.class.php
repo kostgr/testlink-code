@@ -7053,11 +7053,6 @@ class testplan extends tlObjectWithAttachments
       $my['join']['tsuites'] = " JOIN {$this->tables['nodes_hierarchy']} NH_TSUITE " . 
                                " ON NH_TSUITE.id = NH_TCASE.parent_id ";
     }
-    
-    if($my['options']['ua_force_join'])
-    {
-      $my['join']['ua'] = str_replace('LEFT OUTER',' ', $my['join']['ua']);
-    }  
 
     $union['not_run'] = "/* {$debugMsg} sqlUnion - not run */" . $commonFields .
                          " FROM {$this->tables['testplan_tcversions']} TPTCV " .                          
@@ -7088,6 +7083,11 @@ class testplan extends tlObjectWithAttachments
                          " AND E.id IS NULL AND LEX.id IS NULL";
           
 
+     if($my['options']['ua_force_join'])
+     {
+         $my['join']['ua'] = str_replace('LEFT OUTER',' ', $my['join']['ua']);
+     }  
+                         
     $union['exec'] = "/* {$debugMsg} sqlUnion - executions */" . $commonFields . 
                      " FROM {$this->tables['testplan_tcversions']} TPTCV " .                          
                      " JOIN {$this->tables['tcversions']} TCV ON TCV.id = TPTCV.tcversion_id " .
