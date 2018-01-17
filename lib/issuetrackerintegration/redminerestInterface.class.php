@@ -228,17 +228,21 @@ class redminerestInterface extends issueTrackerInterface
 		        $issue->IDHTMLString = "<b>{$issueID} : </b>";
 		        $issue->issue_typeHTMLString = "<b>". (string)$xmlObj->tracker['name'] . " </b>";
 				$issue->statusCode = (string)$xmlObj->status['id'];
-				$issue->statusVerbose = (string)$xmlObj->status['name'];;
-				if (isset($this->status_color[$issue->statusVerbose]))
-				{
-				    $issue->statusColor = $this->status_color[$issue->statusVerbose];
-				}
+				$issue->statusVerbose = (string)$xmlObj->status['name'];
 				$issue->statusHTMLString = "[$issue->statusVerbose] ";
 				$issue->summary = $issue->summaryHTMLString = (string)$xmlObj->subject;
 				$issue->redmineProject = array('name' => (string)$xmlObj->project['name'], 
 				                               'id' => (int)$xmlObj->project['id'] );
 				                               
-				$issue->isResolved = isset($this->resolvedStatus->byCode[$issue->statusCode]); 
+				$issue->isResolved = isset($this->resolvedStatus->byCode[$issue->statusCode]);
+				if (isset($this->status_color[$issue->statusVerbose]))
+				{
+				    $issue->statusColor = $this->status_color[$issue->statusVerbose];
+				}
+				else if (!$issue->isResolved)
+				{
+				    $issue->statusColor = 'Khaki';
+				}
 			}
 		}
 		catch(Exception $e)
