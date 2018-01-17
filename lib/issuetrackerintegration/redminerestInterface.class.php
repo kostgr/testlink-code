@@ -225,7 +225,8 @@ class redminerestInterface extends issueTrackerInterface
       if( !is_null($xmlObj) && is_object($xmlObj))
 			{
 				$issue = new stdClass();
-		    $issue->IDHTMLString = "<b>{$issueID} : </b>";
+		        $issue->IDHTMLString = "<b>{$issueID} : </b>";
+		        $issue->issue_typeHTMLString = "<b>". (string)$xmlObj->tracker['name'] . " </b>";
 				$issue->statusCode = (string)$xmlObj->status['id'];
 				$issue->statusVerbose = (string)$xmlObj->status['name'];;
 				$issue->statusHTMLString = "[$issue->statusVerbose] ";
