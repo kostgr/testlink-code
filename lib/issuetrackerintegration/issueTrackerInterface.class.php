@@ -341,6 +341,11 @@ abstract class issueTrackerInterface
       $ret->link = "TestLink Internal Message: getIssue($issueID) FAILURE on " . __METHOD__;
       return $ret;
     }
+
+    if (property_exists($issue, 'issue_typeHTMLString'))
+    {
+        $link .= $issue->issue_typeHTMLString;
+    }
     
     $useIconv = property_exists($this->cfg,'dbcharset');
     if($useIconv)
