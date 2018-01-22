@@ -16,6 +16,14 @@
  * 	2. bts (if bug tracker is connected only), 
  * 	3. req (if project has available requirements only)
  */
+
+$tlCfg->reports_list['results_flat_with_bugs'] = array(
+    'title' => 'link_report_test_flat_with_bugs',
+    'url' => 'lib/results/resultsTCFlat_withBugs.php',
+    'enabled' => 'all',
+    'directLink' => '%slnl.php?apikey=%s&tproject_id=%s&tplan_id=%s&type=results_flat_with_bugs',
+    'format' => 'format_html,format_mail_html'
+);
 // $tlCfg->reports_list['MY_REPORT'] = array( 
 // 	'title' => 'link_MY_REPORT',
 // 	'url' => 'lib/results/fileThatImplementsMYREPORTLogics.php',

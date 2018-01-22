@@ -1,0 +1,25 @@
+<?php
+/**
+ * ♔ TestLink Open Source Project - http://testlink.sourceforge.net/
+ * This script is distributed under the GNU General Public License 2 or later.
+ *
+ * Define your custom strings for this locale here.
+ * Custom strings need to be defined for each locale you plan to use
+ * Remove ".example" from filename to use this file
+ *
+ * @filesource	locale/en_GB/custom_strings.txt
+ * @package 	TestLink
+ * @author 		Julian Krien
+ * @copyright 	2003, TestLink community
+ * @link 		http://www.teamst.org/index.php
+ *
+ **/
+
+$TLS_link_report_test_flat_with_bugs = "Test results with bugs (as Excel-File)";
+
+$TLS_redmine_tracker = "Issue Tracker";
+$TLS_redmine_id = "Issue ID";
+$TLS_redmine_status = "Issue Status";
+$TLS_redmine_summary = "Issue Summary";
+
+?>
