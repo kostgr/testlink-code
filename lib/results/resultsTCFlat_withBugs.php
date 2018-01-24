@@ -136,7 +136,7 @@ if( ($gui->activeBuildsQty <= $gui->matrixCfg->buildQtyLimit) ||
   // Every Test suite a row on matrix to display will be created
   // One matrix will be created for every platform that has testcases
   $tcols = array(//'tsuite', 
-    'tsuite_root', 'tsuite_2nd', 'tcase','version');
+    'testplan', 'tsuite_root', 'tsuite_2nd', 'tcase','version');
   if($gui->show_platforms)
   {
     $tcols[] = 'platform';
@@ -441,7 +441,7 @@ function createSpreadsheet($gui,$args)
   // Issue-Status
   // Issue-Title
    
-  $dataHeader = array($lbl['toplevel_test_suite'],
+  $dataHeader = array($lbl['testplan'], $lbl['toplevel_test_suite'],
       $lbl['test_suite_2nd_lvl'],
                       $lbl['title_test_case_title'],
                       $lbl['version']);
@@ -620,6 +620,8 @@ execution_type => NEED TO DECODE
     {
         $rows = array();
     
+        $rows[$cols['testplan']] = $gui->tplan_name; 
+        
 //         $rows[$cols['tsuite']] = $metrics[$ix]['suiteName'];
         $yoda = explode('/',$metrics[$ix]['suiteName']);
         
