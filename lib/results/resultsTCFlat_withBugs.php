@@ -135,7 +135,8 @@ if( ($gui->activeBuildsQty <= $gui->matrixCfg->buildQtyLimit) ||
 
   // Every Test suite a row on matrix to display will be created
   // One matrix will be created for every platform that has testcases
-  $tcols = array('tsuite', 'tsuite_root', 'tsuite_2nd', 'tcase','version');
+  $tcols = array(//'tsuite', 
+    'tsuite_root', 'tsuite_2nd', 'tcase','version');
   if($gui->show_platforms)
   {
     $tcols[] = 'platform';
@@ -365,12 +366,13 @@ function initializeGui(&$dbHandler,&$argsObj,$imgSet,&$tplanMgr)
 function createSpreadsheet($gui,$args)
 {
 
-  $lbl = init_labels(array('test_suite_full_path' => null,'platform' => null,'priority' => null,
+  $lbl = init_labels(array('platform' => null,'priority' => null,
                            'build' => null, 'title_test_case_title' => null,'test_exec_by' => null,
-                           'notes' => null, 'date_time_run' => null, 'execution_duration' => null,
+//                            'notes' => null, 
+                           'date_time_run' => null, 'execution_duration' => null,
                            'testproject' => null,'generated_by_TestLink_on' => null,'testplan' => null,
                            'result_on_last_build' => null,'last_execution' => null,
-                           'test_suite' => null, 'test_suite_2nd_lvl' => null,
+                           'toplevel_test_suite' => null, 'test_suite_2nd_lvl' => null,
 //                            'assigned_to' => null,
                             'tcexec_latest_exec_result' => null,
                            'version' => null,'execution_type' => null, 'execution' => null,
@@ -439,8 +441,7 @@ function createSpreadsheet($gui,$args)
   // Issue-Status
   // Issue-Title
    
-  $dataHeader = array($lbl['test_suite_full_path'],
-      $lbl['test_suite'],
+  $dataHeader = array($lbl['toplevel_test_suite'],
       $lbl['test_suite_2nd_lvl'],
                       $lbl['title_test_case_title'],
                       $lbl['version']);
@@ -461,7 +462,7 @@ function createSpreadsheet($gui,$args)
   $dataHeader[] = $lbl['tcexec_latest_exec_result'];
   $dataHeader[] = $lbl['date_time_run'];
   $dataHeader[] = $lbl['test_exec_by'];
-  $dataHeader[] = $lbl['notes'];
+//   $dataHeader[] = $lbl['notes'];
   $dataHeader[] = $lbl['execution_duration'];
   $dataHeader[] = $lbl['execution_type'];
   $dataHeader[] = $lbl['execution'];
@@ -619,11 +620,18 @@ execution_type => NEED TO DECODE
     {
         $rows = array();
     
-        $rows[$cols['tsuite']] = $metrics[$ix]['suiteName'];
+//         $rows[$cols['tsuite']] = $metrics[$ix]['suiteName'];
         $yoda = explode('/',$metrics[$ix]['suiteName']);
         
         $rows[$cols['tsuite_root']] = reset($yoda);
-        $rows[$cols['tsuite_2nd']] = next($yoda);
+        if (next($yoda))
+        {
+            $rows[$cols['tsuite_2nd']] = current($yoda);
+        }
+        else
+        {
+            $rows[$cols['tsuite_2nd']] = null;            
+        }
         
         $eid = $args->tcPrefix . $metrics[$ix]['external_id'];
         $rows[$cols['tcase']] = 
@@ -662,7 +670,7 @@ execution_type => NEED TO DECODE
         }    
         $rows[] = $u;
     
-        $rows[] = $metrics[$ix]['execution_notes'];
+//         $rows[] = $metrics[$ix]['execution_notes'];
         $rows[] = $metrics[$ix]['execution_duration'];
          
         $rows[] = 

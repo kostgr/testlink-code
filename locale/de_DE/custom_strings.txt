@@ -22,6 +22,7 @@ $TLS_redmine_status = "Issue-Status";
 $TLS_redmine_summary = "Issue-Titel";
 $TLS_redmine_priority = "Issue-Priorität";
 $TLS_test_suite_2nd_lvl = "Testsuite (zweite Ebene)";
-$TLS_test_suite_full_path = "Testsuite (voller Pfad)";
+$TLS_toplevel_test_suite = "Top-Level Testsuite";
+//$TLS_test_suite_full_path = "Testsuite (voller Pfad)";
 
 ?>
