@@ -21,5 +21,8 @@ $TLS_redmine_tracker = "Issue Tracker";
 $TLS_redmine_id = "Issue ID";
 $TLS_redmine_status = "Issue Status";
 $TLS_redmine_summary = "Issue Summary";
+$TLS_redmine_priority = "Issue Priority";
+$TLS_test_suite_2nd_lvl = "Test Suite (second level)";
+$TLS_test_suite_full_path = "Test Suite (full path)";
 
 ?>
