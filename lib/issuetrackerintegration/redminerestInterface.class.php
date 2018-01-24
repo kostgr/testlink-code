@@ -231,6 +231,7 @@ class redminerestInterface extends issueTrackerInterface
 				$issue->statusCode = (string)$xmlObj->status['id'];
 				$issue->statusVerbose = (string)$xmlObj->status['name'];
 				$issue->statusHTMLString = "[$issue->statusVerbose] ";
+				$issue->priorityVerbose = (string)$xmlObj->priority['name'];
 				$issue->summary = $issue->summaryHTMLString = (string)$xmlObj->subject;
 				$issue->redmineProject = array('name' => (string)$xmlObj->project['name'], 
 				                               'id' => (int)$xmlObj->project['id'] );

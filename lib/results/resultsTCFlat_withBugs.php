@@ -70,6 +70,7 @@ function getBugsForExec(&$db,&$bug_interface,$execution_id,$raw = null)
           $bug_list[$elem['bug_id']]['status'] = $issue->statusVerbose;
           $bug_list[$elem['bug_id']]['issue_type'] = $issue->issue_type;
           $bug_list[$elem['bug_id']]['summary'] = $issue->summary;
+          $bug_list[$elem['bug_id']]['priorityVerbose'] = $issue->priorityVerbose;
         }  
         if($addAttr)
         {
@@ -123,7 +124,7 @@ if( ($gui->activeBuildsQty <= $gui->matrixCfg->buildQtyLimit) ||
   $buildSet = array('buildSet' => $args->builds->idSet);
 
   $opt = array('getExecutionNotes' => true, 'getTester' => true,
-               'getUserAssignment' => true, 'output' => 'cumulative',
+               'getUserAssignment' => false, 'output' => 'cumulative',
                'getExecutionTimestamp' => true, 'getExecutionDuration' => true);
  
   $execStatus = $metricsMgr->getExecStatusMatrixFlat($args->tplan_id,$buildSet,$opt);
@@ -134,7 +135,7 @@ if( ($gui->activeBuildsQty <= $gui->matrixCfg->buildQtyLimit) ||
 
   // Every Test suite a row on matrix to display will be created
   // One matrix will be created for every platform that has testcases
-  $tcols = array('tsuite', 'tcase','version');
+  $tcols = array('tsuite', 'tsuite_root', 'tsuite_2nd', 'tcase','version');
   if($gui->show_platforms)
   {
     $tcols[] = 'platform';
@@ -364,14 +365,16 @@ function initializeGui(&$dbHandler,&$argsObj,$imgSet,&$tplanMgr)
 function createSpreadsheet($gui,$args)
 {
 
-  $lbl = init_labels(array('title_test_suite_name' => null,'platform' => null,'priority' => null,
+  $lbl = init_labels(array('test_suite_full_path' => null,'platform' => null,'priority' => null,
                            'build' => null, 'title_test_case_title' => null,'test_exec_by' => null,
                            'notes' => null, 'date_time_run' => null, 'execution_duration' => null,
                            'testproject' => null,'generated_by_TestLink_on' => null,'testplan' => null,
                            'result_on_last_build' => null,'last_execution' => null,
-                           'assigned_to' => null,'tcexec_latest_exec_result' => null,
+                           'test_suite' => null, 'test_suite_2nd_lvl' => null,
+//                            'assigned_to' => null,
+                            'tcexec_latest_exec_result' => null,
                            'version' => null,'execution_type' => null, 'execution' => null,
-                           'redmine_tracker' => null, 'redmine_id' => null, 'redmine_status' => null, 'redmine_summary' => null));
+                           'redmine_tracker' => null, 'redmine_id' => null, 'redmine_status' => null, 'redmine_summary' => null, 'redmine_priority' => null));
 
   $buildIDSet = $args->builds->idSet;
 
@@ -436,7 +439,9 @@ function createSpreadsheet($gui,$args)
   // Issue-Status
   // Issue-Title
    
-  $dataHeader = array($lbl['title_test_suite_name'],
+  $dataHeader = array($lbl['test_suite_full_path'],
+      $lbl['test_suite'],
+      $lbl['test_suite_2nd_lvl'],
                       $lbl['title_test_case_title'],
                       $lbl['version']);
 
@@ -452,7 +457,7 @@ function createSpreadsheet($gui,$args)
 
   $gui->filterFeedback = null;
   $dataHeader[] = $lbl['build'];
-  $dataHeader[] = $lbl['assigned_to'];
+//   $dataHeader[] = $lbl['assigned_to'];
   $dataHeader[] = $lbl['tcexec_latest_exec_result'];
   $dataHeader[] = $lbl['date_time_run'];
   $dataHeader[] = $lbl['test_exec_by'];
@@ -464,6 +469,7 @@ function createSpreadsheet($gui,$args)
   $dataHeader[] = $lbl['redmine_id'];
   $dataHeader[] = $lbl['redmine_status'];
   $dataHeader[] = $lbl['redmine_summary'];
+  $dataHeader[] = $lbl['redmine_priority'];
   
 
   $startingRow = count($lines2write) + 2; // MAGIC
@@ -496,13 +502,19 @@ function createSpreadsheet($gui,$args)
   
   // Final step
   $objPHPExcel->setActiveSheetIndex(0);
+  
+  foreach(range('A','T') as $columnID) {
+      $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+      ->setAutoSize(true);
+  }
+  
   $settings = array();
   $settings['Excel2007'] = array('ext' => '.xlsx', 
                                  'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   $settings['Excel5'] = array('ext' => '.xls', 
                               'Content-Type' => 'application/vnd.ms-excel');
   
-  $xlsType = 'Excel5';                               
+  $xlsType = 'Excel2007';                               
   $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, $xlsType);
   
   $tmpfname = tempnam(config_get('temp_dir'),"resultsTCFlat.tmp");
@@ -608,6 +620,11 @@ execution_type => NEED TO DECODE
         $rows = array();
     
         $rows[$cols['tsuite']] = $metrics[$ix]['suiteName'];
+        $yoda = explode('/',$metrics[$ix]['suiteName']);
+        
+        $rows[$cols['tsuite_root']] = reset($yoda);
+        $rows[$cols['tsuite_2nd']] = next($yoda);
+        
         $eid = $args->tcPrefix . $metrics[$ix]['external_id'];
         $rows[$cols['tcase']] = 
           htmlspecialchars("{$eid}:{$metrics[$ix]['name']}",ENT_QUOTES);
@@ -627,12 +644,12 @@ execution_type => NEED TO DECODE
         // build,assigned to,exec result,data,tested by,notes,duration
         $rows[] = $gui->buildInfoSet[$metrics[$ix]['build_id']]['name'];
     
-        $u = "";
-        if(isset($userSet,$metrics[$ix]['user_id']))
-        {
-          $u = $userSet[$metrics[$ix]['user_id']];
-        }    
-        $rows[] = $u;
+//         $u = "";
+//         if(isset($userSet,$metrics[$ix]['user_id']))
+//         {
+//           $u = $userSet[$metrics[$ix]['user_id']];
+//         }    
+//         $rows[] = $u;
       
         // $rows[] = $args->cfg['results']['code_status'][$metrics[$ix]['status']];
         $rows[] = $labels[$metrics[$ix]['status']];
@@ -652,7 +669,14 @@ execution_type => NEED TO DECODE
           isset($det[$metrics[$ix]['exec_type']]) ?
           $det[$metrics[$ix]['exec_type']] : 'not configured';
         
-        $rows[] = $metrics[$ix]['executions_id'];
+        if ($metrics[$ix]['executions_id'] != 0)
+        {
+            $rows[] = $metrics[$ix]['executions_id'];
+        }
+        else
+        {
+            $rows[] = null;
+        }
           
         if ($bugId != 0)
         {
@@ -664,13 +688,15 @@ execution_type => NEED TO DECODE
             $rows[] = $bugId;
             $rows[] = $bug['status'];
             $rows[] = $bug['summary'];
+            $rows[] = $bug['priorityVerbose'];
         }
         else 
         {
-            $rows[] = '-';
-            $rows[] = '';
-            $rows[] = '-';
-            $rows[] = '-';
+            $rows[] = null;
+            $rows[] = null;
+            $rows[] = null;
+            $rows[] = null;
+            $rows[] = null;
         }
     
         $gui->matrix[] = $rows;
