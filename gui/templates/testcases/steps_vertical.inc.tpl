@@ -10,6 +10,12 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
 
 @internal revisions
 *}
+  {if isset($add_exec_info) && $add_exec_info}
+    {$inExec = 1}
+  {else}
+    {$inExec = 0}
+  {/if}
+
   {if $edit_enabled}
   <tr><td>
     <img class="clickable" src="{$tlImages.reorder}" align="left" title="{$inc_steps_labels.show_hide_reorder}"
@@ -17,6 +23,9 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
     <td>{$inc_steps_labels.show_hide_reorder}</td>
   </tr>
   {/if}
+  
+  {$att_ena = $inExec && 
+              $tlCfg->exec_cfg->steps_exec_attachments}
 
   {foreach from=$steps item=step_info}
   <tr>
@@ -69,4 +78,61 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
       <td>&nbsp;</td>
     <td colspan="2" style="padding: 0.5em 0.5em 2em 0.5em">{if $gui->stepDesignEditorType  == 'none'}{$step_info.expected_results|nl2br}{else}{$step_info.expected_results}{/if}</td>
   </tr>
+  
+  {if $inExec}
+  <tr>
+      <td>&nbsp;</td>
+      <th>{if $tlCfg->exec_cfg->steps_exec_notes_default == 'latest'}{$inc_steps_labels.latest_exec_notes}
+          {else}{$inc_steps_labels.step_exec_notes}{/if}
+          <img class="clickable" src="{$tlImages.clear_notes}" 
+          onclick="javascript:clearTextAreaByClassName('step_note_textarea');" title="{$inc_steps_labels.clear_all_notes}"></th>
+
+      <th>{$inc_steps_labels.step_exec_status}
+       <img class="clickable" src="{$tlImages.reset}" 
+          onclick="javascript:clearSelectByClassName('step_status');" title="{$inc_steps_labels.clear_all_status}"></th>
+  </tr>
+  {/if}
+  {if $inExec}
+  <tr>
+    <td>&nbsp;</td>
+    <td class="exec_tcstep_note">
+      <textarea class="step_note_textarea" name="step_notes[{$step_info.id}]" id="step_notes_{$step_info.id}" 
+                cols="40" rows="5">{$step_info.execution_notes|escape}</textarea>
+    </td>
+
+    <td>
+      <select class="step_status" name="step_status[{$step_info.id}]" id="step_status_{$step_info.id}">
+        {html_options options=$gui->execStatusValues selected=$step_info.execution_status}
+
+      </select> <br>
+      
+      {if $gui->tlCanCreateIssue}
+        {include file="execute/add_issue_on_step.inc.tpl" 
+                 args_labels=$labels
+                 args_step_id=$step_info.id}
+      {/if}
+    </td>
+   </tr>
+   {/if}
+  
+  {if $inExec && $gui->tlCanCreateIssue} 
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="2">
+      {include file="execute/issue_inputs_on_step.inc.tpl"
+               args_labels=$labels
+               args_step_id=$step_info.id}
+      </td>
+    </tr> 
+  {/if}
+
+  {if $gui->allowStepAttachments && $att_ena}
+    <tr>
+    	<td>&nbsp;</td>
+      <td colspan="2">
+      {include file="attachments_simple.inc.tpl" attach_id=$step_info.id}
+      </td>
+    </tr> 
+  {/if} 
+  
   {/foreach}
