@@ -15,21 +15,23 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
   {else}
     {$inExec = 0}
   {/if}
-
-  {if $edit_enabled}
-  <tr><td>
-    <img class="clickable" src="{$tlImages.reorder}" align="left" title="{$inc_steps_labels.show_hide_reorder}"
-    onclick="showHideByClass('span','order_info');"></td>
-    <td>{$inc_steps_labels.show_hide_reorder}</td>
-  </tr>
-  {/if}
   
   {$att_ena = $inExec && 
               $tlCfg->exec_cfg->steps_exec_attachments}
 
   {foreach from=$steps item=step_info}
-  <tr>
-    <th width="25px"><nobr>{$inc_steps_labels.step_number}
+  <tr id="step_row_{$step_info.step_number}">
+    <th width="25px"><nobr>
+    <nobr>
+    {if $edit_enabled && $steps != '' && !is_null($steps) && $step_info.step_number == 1 }
+      <img class="clickable" src="{$tlImages.reorder}" align="left"
+           title="{$inc_steps_labels.show_hide_reorder}"
+           onclick="showHideByClass('span','order_info');">
+      <img class="clickable" src="{$tlImages.ghost_item}" align="left"
+           title="{$inc_steps_labels.show_ghost_string}"
+           onclick="showHideByClass('tr','ghost');">
+    {/if}
+    {$inc_steps_labels.step_number}
     <span class="order_info" style='display:none'>
     <input type="text" name="step_set[{$step_info.id}]" id="step_set_{$step_info.id}"
            value="{$step_info.step_number}"
@@ -67,6 +69,10 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
            onclick="launchInsertStep({$step_info.id});" src="{$tlImages.insert_step}"/>
 
     </td>
+    
+      {if $ghost_control}
+      <tr class='ghost' style='display:none'><td></td><td colspan="2">{$step_info.ghost_action}</td></tr>    
+      {/if}
     {/if}
   </tr>
   <tr>
@@ -78,6 +84,10 @@ TestLink Open Source Project - http://testlink.sourceforge.net/
       <td>&nbsp;</td>
     <td colspan="2" style="padding: 0.5em 0.5em 2em 0.5em">{if $gui->stepDesignEditorType  == 'none'}{$step_info.expected_results|nl2br}{else}{$step_info.expected_results}{/if}</td>
   </tr>
+  
+  {if $ghost_control}
+    <tr class='ghost' style='display:none'><td></td><td colspan="2">{$step_info.ghost_result}</td></tr>    
+  {/if}
   
   {if $inExec}
   <tr>

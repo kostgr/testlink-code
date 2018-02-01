@@ -175,7 +175,8 @@ var tc_editor = "{$gui->editorType}";
     {foreach from=$gui->tcaseSteps item=step_info}
       <tr id="step_row_{$step_info.step_number}">
       {if $step_info.step_number == $gui->step_number}
-      <td style="text-align:left;">{$gui->step_number}</td>
+        {* this means we have steps to display *}
+        <td style="text-align:left;">{$gui->step_number}</td>
         <td>{$steps}
       <div class="groupBtn">
         <input id="do_update_step" type="submit" name="do_update_step" 
@@ -208,9 +209,10 @@ var tc_editor = "{$gui->editorType}";
           <select name="exec_type" onchange="content_modified = true">
               {html_options options=$gui->execution_types selected=$gui->step_exec_type}
           </select>
-          </td>
-          {/if}
+        </td>
+        {/if}
       {else}
+        {* show other steps readonly *}
         <td style="text-align:left;"><a href="{$hrefEditStep}{$step_info.id}">{$step_info.step_number}</a></td>
         <td ><a href="{$hrefEditStep}{$step_info.id}">{$step_info.actions}</a></td>
         <td ><a href="{$hrefEditStep}{$step_info.id}">{$step_info.expected_results}</a></td>
@@ -273,7 +275,31 @@ var tc_editor = "{$gui->editorType}";
       <tr>
         <td>&nbsp;</td>
         {if $step_info.step_number == $gui->step_number}
-          <td colspan="2">{$expected_results}</td>
+          <td colspan="2">{$expected_results}
+          
+           <div class="groupBtn">
+			        <input id="do_update_step" type="submit" name="do_update_step" 
+			               onclick="show_modified_warning=false; doAction.value='{$gui->operation}'" 
+			               value="{$labels.btn_save}" />
+			
+			        <input type="submit" id="do_update_step_and_insert" name="do_update_step_and_insert" 
+			               onclick="show_modified_warning=false; doAction.value='{$gui->operation}AndInsert'" 
+			               value="{$labels.btn_save_and_insert}" />
+			
+			        <input id="do_update_step_and_exit" type="submit" name="do_update_stepand_exit" 
+			               onclick="show_modified_warning=false; doAction.value='{$gui->operation}AndExit'" 
+			               value="{$labels.btn_save_and_exit}" />
+			
+			        {if $gui->operation == 'doUpdateStep'}
+			          <input id="do_copy_step" type="submit" name="do_copy_step" 
+			                 onclick="doAction.value='doCopyStep'" value="{$labels.btn_cp}" />
+			        {/if}
+			
+			        <input type="button" name="cancel" value="{$labels.btn_cancel}"
+			               {if $gui->goback_url != ''}  onclick="show_modified_warning=false; location='{$gui->goback_url}';"
+			               {else}  onclick="show_modified_warning=false; javascript:history.back();" {/if} />
+			     </div>
+			    </td>
         {else}
           <td colspan="2" style="padding: 0.5em 0.5em 2em 0.5em">
           <a href="{$hrefEditStep}{$step_info.id}">{$step_info.expected_results}</a></td>
