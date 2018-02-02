@@ -29,6 +29,7 @@
 
 /** @global array Global configuration class */
 $tlCfg = new stdClass();
+
 $tlCfg->api = new stdClass();
 $tlCfg->document_generator = new stdClass();
 
@@ -121,7 +122,10 @@ $tlCfg->instance_id = 'TLM';
  * @link http://php.net/function.setcookie
  * @global string $tlCfg->cookie_path
  */
- $tlCfg->cookie_path = '/';
+$tlCfg->cookie_path = '/';
+
+// Separate different app instances from each other (for session variables)
+$tlCfg->session_name = 'testlink';
 
 
 /* [LOCALIZATION] */

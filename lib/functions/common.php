@@ -49,6 +49,8 @@ require_once('tlsmarty.inc.php');
 /** Initialize the Event System */
 require_once('event_api.php' );
 
+require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . '../../config.inc.php');
+
 // Needed to avoid problems with Smarty 3
 spl_autoload_register('tlAutoload');
 
@@ -279,6 +281,7 @@ function doSessionStart($setPaths=false)
   session_set_cookie_params(99999);
   if(!isset($_SESSION))
   {
+    session_name(config_get('session_name'));
     session_start();
     if(defined('KINT_ON') && KINT_ON)
     {

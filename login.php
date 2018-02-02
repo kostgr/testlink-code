@@ -225,7 +225,7 @@ function init_gui(&$db,$args)
     case 'expired':
       if(!isset($_SESSION))
       {
-        session_start();
+        doSessionStart();
       }
       session_unset();
       session_destroy();
