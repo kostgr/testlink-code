@@ -139,7 +139,7 @@ function doAuthorize(&$db,$login,$pwd,$options=null)
     // (this is a protocol restriction). This requires that you place calls to this function 
     // prior to any output, including <html> and <head> tags as well as any whitespace.
     //
-    setcookie($auth_cookie_name,$user->getSecurityCookie(),$expireOnBrowserClose,$cookie_path);      
+    setcookie($auth_cookie_name,$user->getSecurityCookie(), TL_COOKIE_KEEPTIME, $cookie_path); // expires in one hour      
 
     // Disallow two sessions within one browser
     if ($my['options']['doSessionExistsCheck'] && 
@@ -197,10 +197,9 @@ function doSSOClientCertificate(&$dbHandler,$apache_mod_ssl_env,$authCfg=null)
     if( $login_exists && $user->isActive)
     {
       // Need to do set COOKIE following Mantis model
-      $expireOnBrowserClose=false;
       $auth_cookie_name = config_get('auth_cookie');
       $cookie_path = config_get('cookie_path');
-      setcookie($auth_cookie_name,$user->getSecurityCookie(),$expireOnBrowserClose,$cookie_path);      
+      setcookie($auth_cookie_name,$user->getSecurityCookie(),TL_COOKIE_KEEPTIME,$cookie_path);      
 
       // Disallow two sessions within one browser
       if (isset($_SESSION['currentUser']) && !is_null($_SESSION['currentUser']))
@@ -395,11 +394,9 @@ function doSessionSetUp(&$dbHandler,&$userObj)
   $ret = null;
 
   // Need to do set COOKIE following Mantis model
-  $expireOnBrowserClose=false;
   $auth_cookie_name = config_get('auth_cookie');
   $cookie_path = config_get('cookie_path');
-  setcookie($auth_cookie_name,$userObj->getSecurityCookie(),$expireOnBrowserClose,
-            $cookie_path);      
+  setcookie($auth_cookie_name,$userObj->getSecurityCookie(),TL_COOKIE_KEEPTIME, $cookie_path);      
 
   // Block two sessions within one browser
   if (isset($_SESSION['currentUser']) && !is_null($_SESSION['currentUser']))

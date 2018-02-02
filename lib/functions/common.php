@@ -428,7 +428,7 @@ function initProject(&$db,$hash_user_sel)
     $tplan_id = $user_sel["tplan_id"];
   
     $cookie_path = config_get('cookie_path');  
-    setcookie($cookieName, $tplan_id, time()+60*60*24*90, $cookie_path);
+    setcookie($cookieName, $tplan_id, TL_COOKIE_KEEPTIME, $cookie_path);
   } 
   elseif (isset($_COOKIE[$cookieName])) 
   {
