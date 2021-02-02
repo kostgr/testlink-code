@@ -4,3 +4,7 @@ config_db.inc.php
 third_party/
 **/._*
 upload_area/**
+.project
+.settings/**
+.idea/**
+.buildpath

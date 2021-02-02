@@ -2225,6 +2225,7 @@ function renderExecutionForPrinting(&$dbHandler, $baseHref, $id, $userObj = null
     $tcaseMgr = new testcase($dbHandler);
   }  
 
+  // hier die SQL um Platform-Name erweitern...
   $sql = " SELECT E.id AS execution_id, E.status, E.execution_ts, E.tester_id," .
          " E.notes, E.build_id, E.tcversion_id,E.tcversion_number,E.testplan_id," .
          " E.platform_id,E.execution_duration, " .
@@ -2299,6 +2300,7 @@ function renderExecutionForPrinting(&$dbHandler, $baseHref, $id, $userObj = null
     $context['user'] = $userObj;
     $out .= renderTestCaseForPrinting($dbHandler,$tcase,$renderOptions,$env,$context,$indentLevel); 
 
+    // KT - hier der toter link zu execution report
     $out .= '<br/>' . lang_get('direct_link') . ':' .
             $env->base_href . 'lnl.php?type=exec&id=' . intval($id) . '<br/>';
     $exec_info = null;    
